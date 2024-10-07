@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.RequestManager
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.FirebaseApp
 import com.plcoding.spotifycloneyt.R
 import com.plcoding.spotifycloneyt.adapters.SwipeSongAdapter
 import com.plcoding.spotifycloneyt.data.entities.Song
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
         setContentView(R.layout.activity_main)
         subscribeToObservers()
 
