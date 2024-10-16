@@ -2,6 +2,8 @@ package com.plcoding.spotifycloneyt.exoplayer.callbacks
 
 import android.app.Notification
 import android.content.Intent
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+import android.os.Build
 import androidx.core.content.ContextCompat
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.plcoding.spotifycloneyt.exoplayer.MusicService
@@ -27,12 +29,21 @@ class MusicPlayerNotificationListener(
     ) {
         super.onNotificationPosted(notificationId, notification, ongoing)
         musicService.apply {
-            if(ongoing && !isForegroundService) {
+            if (ongoing && !isForegroundService) {
                 ContextCompat.startForegroundService(
                     this,
                     Intent(applicationContext, this::class.java)
                 )
                 startForeground(NOTIFICATION_ID, notification)
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                    startForeground(NOTIFICATION_ID, notification)
+                } else {
+                    startForeground(
+                        NOTIFICATION_ID,
+                        notification,
+                        FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+                    )
+                }
                 isForegroundService = true
             }
         }
